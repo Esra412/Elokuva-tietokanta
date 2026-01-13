@@ -1,0 +1,173 @@
+:root {
+    --bg-color: #050a24;
+    --header-bg: #000000;
+    --accent-gold: #d4af37;
+    --text-gold: #d0ccb9;
+    --search-bg: #e0e0e0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: white;
+}
+
+/* HEADER */
+header {
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+.logo {
+    font-size: 2rem;
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    color: var(--text-gold);
+    letter-spacing: 2px;
+}
+
+nav a {
+    color: var(--text-gold);
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+nav a.active {
+    border-bottom: 2px solid var(--accent-gold);
+    padding-bottom: 5px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* SEARCH BAR */
+.search-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--search-bg);
+    border-radius: 50px;
+    padding: 10px 25px;
+    width: 100%;
+    max-width: 700px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
+}
+
+.search-bar i {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+/* SECTION HEADERS (PILL) */
+.pill-title {
+    display: inline-block;
+    border: 2px solid var(--accent-gold);
+    padding: 5px 30px;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-family: 'Georgia', serif;
+    color: var(--text-gold);
+    margin-bottom: 25px;
+}
+
+/* MOVIE ROWS */
+.movie-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-gold) transparent;
+}
+
+.movie-row::-webkit-scrollbar {
+    height: 8px;
+}
+
+.movie-row::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 10px;
+}
+
+/* MOVIE CARDS */
+.movie-card {
+    position: relative;
+    min-width: 180px;
+    height: 260px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ADD/REMOVE BUTTON OVERLAY */
+.action-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--accent-gold);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.action-btn:hover {
+    background: var(--accent-gold);
+    color: black;
+}
+
+/* ELOKUVAN NIMI (Valinnainen: jos haluat tekstin kuvan päälle) */
+.movie-info {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    width: 100%;
+    padding: 10px;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+}

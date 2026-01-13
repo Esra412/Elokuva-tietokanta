@@ -1,0 +1,167 @@
+        :root {
+            --bg-color: #050a24;
+            --card-bg: #000000;
+            --accent-gold: #d4af37;
+            --text-title: #d0ccb9;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: hidden; /* estä  sivun rullaaminen */
+            
+        }
+
+    
+         header {
+            box-sizing: border-box;
+            width: calc(94% + 85px);
+            max-width: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px; /* laajenna oike ja vasenkulmat*/
+            margin-left: -40px;
+            margin-right: -40px;
+            border-bottom: 2px solid var(--accent-gold);
+            margin-bottom: 50px;
+            background-color: var(--card-bg);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--text-title);
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: var(--text-title);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        nav a.active {
+            border-bottom: 3px solid var(--accent-gold);
+            padding-bottom: 5px;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        
+        .container {
+            display: flex;
+            gap: 40px;
+            width: 90%;
+            max-width: 1100px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 85px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card h2 {
+            color: var(--text-title);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .card .divider {
+            width: 80%;
+            height: 1px;
+            background: var(--accent-gold);
+            margin: 20px auto;
+        }
+
+        .card p.subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+        }
+
+        .card p.description {
+            color: var(--text-white);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+    
+
+    .btn {
+    padding: 12px 30px; 
+    font-size: 0.9rem;   
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    border: 2px solid var(--accent-gold);
+    }
+
+
+    .btn-solid {
+            background-color: var(--accent-gold);
+            color: #000000;
+        }
+
+     .btn-outline {
+            background-color: transparent;
+            color: var(--text-white);
+  }
+
+    .btn:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    transform: none;
+    }
+
+     @media (max-width: 768px) {
+        header { flex-direction: column; gap: 20px; text-align: center; }
+        nav a { margin: 0 10px; }
+        .container { flex-direction: column; }
+        .card { min-width: 100%; }
+        }
+
+
+        /*--------------------------- FONTTIT ----------------*/
+
+    /* Gilda Display Static */
+    .Gilda-Display-Static-FONT {
+    font-family: 'Gilda Display', serif;
+    letter-spacing: 1px;
+    }
+
+    /* Playfair Display */
+    .playfair {
+    font-family: 'Playfair Display', serif;
+    }
+
+    .cutive { 
+    font-family: 'Cutive', serif;
+    }

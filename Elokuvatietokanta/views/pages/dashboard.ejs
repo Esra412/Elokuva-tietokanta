@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elokuvatietokanta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap" rel="stylesheet"> <!-- Gilda Display Static - FONTTI -->
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Playfair Display - FONTTI -->
+    <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Cutive - FONTTI -->
+</head>
+<body>
+
+    <header>
+        <div class="logo playfair">ELOKUVATIETOKANTA</div>
+        <nav>
+            <a href="#" class="active cutive">ETUSIVU</a>
+            <a href="/movies" class="cutive">ELOKUVAT</a>
+            <a href="#" class="cutive">ARVOSTELUT</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="Gilda-Display-Static-FONT">
+            TERVETULOA OMAAN ELOKUVAKIRJASTOOSI, <br> 
+            <%= username %>! 
+        </h2>
+            <div class="divider"></div>
+            <p class="Gilda-Display-Static-FONT">
+                Elokuvat ovat ikkunoita uusiin maailmoihin, ja nyt sinulla on avaimet <br> niiden hallintaan.
+                Olet kirjautunut sisään onnistuneesti, joten kaikki työkalut <br>ovat käytössäsi. 
+                Voit laajentaa henkilökohtaista kokoelmaasi lisäämällä uusia löytöjä, <br>
+                pitää kirjaa näkemistäsi mestariteoksista ja antaa äänensi kuulua arvostelujen muodossa. <br>
+                
+            </p>
+            <p class="Gilda-Display-Static-FONT">Mikä tarina täyttää ruutusi tänään?</p>
+        </div>
+    </div>
+</body>
+</html>
