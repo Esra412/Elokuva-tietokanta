@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kirjaudu / Rekisteröidy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--  Cutive - FONTTI -->
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Playfair+Display&family=Cutive&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/login.css">
+</head>
+<body>
+<div class="auth-card">
+    <div class="auth-title">Elokuvatietokanta</div>
+
+    <!-- TABIT -->
+    <div class="tabs">
+        <div class="tab active" onclick="showLogin()">Kirjaudu</div>
+        <div class="tab" onclick="showRegister()">Rekisteröidy</div>
+    </div>
+
+    <!-- Kirjaudu -->
+<form class="form active" id="loginForm">
+    <div class="form-group">
+        <label>Sähköposti</label>
+        <input type="email" id="loginEmail" required>
+    </div>
+
+    <div class="form-group">
+        <label>Salasana</label>
+        <input type="password" id="loginPassword" required>
+    </div>
+
+    <button class="btn" type="button" onclick="login()">Kirjaudu</button>
+
+    <div class="small-text">Unohditko salasanan?</div>
+</form>
+
+
+
+<!-- Rekisteröidy -->
+<form class="form" id="registerForm">
+    <div class="form-group">
+        <label>Käyttäjänimi</label>
+        <input type="text" id="registerUsername" required>
+    </div>
+
+    <div class="form-group">
+        <label>Sähköposti</label>
+        <input type="email" id="registerEmail" required> 
+    </div>
+
+    <div class="form-group">
+        <label>Salasana</label>
+        <input type="password" id="registerPassword" required>
+    </div>
+
+    <div class="form-group">
+        <label>Vahvista Salasana</label>
+        <input type="password" id="verificationCode" required>
+    </div>
+    <button class="btn" onclick="register()" type="button">Rekisteröidy</button>
+
+    <div class="small-text" id="codeStatus"></div>
+</form>
+</div>
+<script src="/scripts/login.js"></script>
+</body>
+</html>
