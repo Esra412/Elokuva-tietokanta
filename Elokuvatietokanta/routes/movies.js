@@ -1,60 +1,44 @@
 const express = require('express');
-const db = require('../db');
 const router = express.Router();
+const db = require('../db'); // Varmista, että polku on oikein
 
-/* 🔍 ARAMA */
-router.get('/search', (req, res) => {
-    const q = `%${req.query.q}%`;
+// ⭐ LISÄÄ ELOKUVA (POST /api/movies/add)
+router.post('/add', (req, res) => {
+    const { imdbId, type, title, poster } = req.body;
+    const userId = req.session.userId;
 
-    db.query(
-        "SELECT * FROM movies WHERE title LIKE ?",
-        [q],
-        (err, results) => {
-            res.json(results);
+    if (!userId) return res.status(401).json({ error: "Kirjaudu sisään" });
+
+    const sql = "INSERT INTO user_movies (user_id, imdb_id, title, poster, type, status) VALUES (?, ?, ?, ?, ?, 'watchlist')";
+    db.query(sql, [userId, imdbId, title, poster, type], (err, result) => {
+        if (err) {
+            console.error("SQL Virhe:", err);
+            return res.status(500).json({ error: err.message });
         }
-    );
+        res.status(200).json({ message: "Lisätty!" });
+    });
 });
 
-/* ➕ KULLANICIYA EKLE */
-router.post('/add', (req, res) => {
-    const userId = req.session.userId;
-    const { imdbId, title, type } = req.body;
-
-    db.query(
-        `INSERT INTO user_movies (user_id, imdb_id, title, type)
-         VALUES (?, ?, ?, ?)`,
-        [userId, imdbId, title, type],
-        () => res.json({ message: 'Listeye eklendi' })
-    );
-});
-
-
-/* 📄 KULLANICININ LİSTESİ */
-router.get('/my', (req, res) => {
-    const userId = req.session.userId;
-
-    db.query(
-        "SELECT * FROM user_movies WHERE user_id = ?",
-        [userId],
-        (err, result) => res.json(result)
-    );
-});
-
-
-
-let myMovies = [];
-
-router.post('/add', (req, res) => {
-    const { imdbId, type, title } = req.body;
-    myMovies.push({ imdbId, type, title });
-    res.json({ success: true });
-});
-
+// 📥 HAE LISTA (GET /api/movies/list)
 router.get('/list', (req, res) => {
-    res.json(myMovies);
+    const userId = req.session.userId;
+    if (!userId) return res.status(401).json({ error: "Kirjaudu sisään" });
+
+    const sql = "SELECT * FROM user_movies WHERE user_id = ?";
+    db.query(sql, [userId], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
 });
 
-module.exports = router;
-
+// 🗑️ POISTA (DELETE /api/movies/remove/:id)
+router.delete('/remove/:id', (req, res) => {
+    const movieId = req.params.id;
+    const sql = "DELETE FROM user_movies WHERE id = ?";
+    db.query(sql, [movieId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Poistettu" });
+    });
+});
 
 module.exports = router;
