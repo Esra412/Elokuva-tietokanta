@@ -65,6 +65,15 @@ app.get('/movies', requireLogin, (req, res) => {
     res.render('pages/movies');
 });
 
+app.get('/arvostelut', requireLogin, (req, res) => {
+    res.render('pages/arvostelut');
+});
+
+// Single review page (open in new tab with query params)
+app.get('/arvostelu', requireLogin, (req, res) => {
+    res.render('pages/arvostelu');
+});
+
 
 // SERVER
 app.listen(PORT, () => {

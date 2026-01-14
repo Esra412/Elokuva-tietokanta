@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elokuvatietokanta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/arvostelut.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap" rel="stylesheet"> <!-- Gilda Display Static - FONTTI -->
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Playfair Display - FONTTI -->
+    <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Cutive - FONTTI -->
+</head>
+<body>
+
+    <header>
+        <div class="logo playfair">ELOKUVATIETOKANTA</div>
+        <nav>
+            <a href="#" class="cutive">ETUSIVU</a>
+            <a href="/movies" class="cutive">ELOKUVAT</a>
+            <a href="/arvostelut" class="active cutive">ARVOSTELUT</a>
+        </nav>
+    </header>
+
+<div class="action-bar">
+    <button class="add-btn" onclick="addMovie()">
+        Lisää arvostelu <span style="font-size: 1.5rem;">+</span>
+    </button>
+</div>
+
+<div class="movie-grid" id="movieGrid">
+</div>
+<script src="/scripts/arvostelut.js" defer></script>
+</body>
+</html>

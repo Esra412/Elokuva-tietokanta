@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/arvostelu.css">
+</head>
+<body>
+ 
+<div class="container">
+    <header>
+        <h1>Elokuvan nimi </h1>
+    </header>
+
+    <form class="dossier-form" id="reviewForm">
+        <div class="poster-upload">
+            <img id="posterPreview" src="https://via.placeholder.com/300x450?text=Afiş+URL+Yapıştır" alt="Önizleme">
+            <label>Afiş Resim URL</label>
+            <input type="url" id="imgUrl" placeholder="https://..." oninput="previewImage(this.value)">
+        </div>
+
+        <div class="form-main">
+            <div>
+                <label>Eser Adı</label>
+                <input type="text" id="title" required placeholder="Film, Dizi veya Kitap">
+            </div>
+            <div>
+                <label>Katsoisitko uudestaan?</label>
+                <select id="ask">
+                    <option value="yes">Joo</option>
+                    <option value="no">Ehkä</option>
+                    <option value="maybe">Ei</option>
+                </select>
+            </div>
+            <div>
+                <label>Tür</label>
+                <input type="text" id="genre" placeholder="Dram, Bilim Kurgu...">
+            </div>
+            <div>
+                <label>İzleme Tarihi</label>
+                <input type="date" id="date">
+            </div>
+            <div>
+                <label>Duygusallık (1-5)</label>
+                <div class="rating-box" id="dropRating" data-val="0">
+                    <span onclick="setRate('dropRating', 1)">💧</span>
+                    <span onclick="setRate('dropRating', 2)">💧</span>
+                    <span onclick="setRate('dropRating', 3)">💧</span>
+                    <span onclick="setRate('dropRating', 4)">💧</span>
+                    <span onclick="setRate('dropRating', 5)">💧</span>
+                </div>
+            </div>
+            <div>
+                <label>Aksiyon/Heyecan (1-5)</label>
+                <div class="rating-box" id="fireRating" data-val="0">
+                    <span onclick="setRate('fireRating', 1)">🔥</span>
+                    <span onclick="setRate('fireRating', 2)">🔥</span>
+                    <span onclick="setRate('fireRating', 3)">🔥</span>
+                    <span onclick="setRate('fireRating', 4)">🔥</span>
+                    <span onclick="setRate('fireRating', 5)">🔥</span>
+                </div>
+            </div>
+            <div class="full-width">
+                <label>🧠 Genel Analiz & Karakter Değerlendirmesi</label>
+                <textarea id="thoughts" rows="4" placeholder="Zihninde neler bıraktı?"></textarea>
+            </div>
+            <div>
+                <label>💡 En Unutulmaz Sahne</label>
+                <textarea id="bestScene" rows="2"></textarea>
+            </div>
+            <div>
+                <label>🔖 İkonik Alıntı</label>
+                <textarea id="quote" rows="2" placeholder="Unutulmaz bir cümle..."></textarea>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn-save">Arşive İşle</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<script src="/scripts/arvostelu.js" defer></script>
+</body>
+</html>
