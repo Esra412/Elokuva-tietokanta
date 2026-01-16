@@ -3,8 +3,7 @@ const movieInput = document.getElementById("movieName");
 const stars = document.querySelectorAll(".star-select span");
 let selectedStars = 0;
 
-// 1. Hae kaikki arvostelut tietokannasta, kun sivu latautuu
-// 1. Päivitä haku
+// 1. Sayfa yüklendiğinde tüm incelemeleri getir
 async function fetchReviews() {
     try {
         const response = await fetch('/api/reviews/all');
@@ -26,23 +25,23 @@ async function fetchReviews() {
     }
 }
 
-// 2. Piirrä klaffikortit
+// 2. Kartları ekrana çiz (Klaffikortit)
 function renderMovies(movies) {
     const grid = document.getElementById('movieGrid');
     grid.innerHTML = '';
 
     movies.forEach(movie => {
-        // Lasketaan tähdet (tietokannassa 'score' on fire + drop, tai voit käyttää fire_ratingia)
+        // Yıldızları hesapla (6 yıldız üzerinden)
         const rating = movie.fire_rating || 0;
         const starHtml = '★'.repeat(rating) + '☆'.repeat(6 - rating);
 
         const card = document.createElement('div');
         card.className = 'clapper-card';
         
-        // Klikkaus avaa yksityiskohtaisen arvostelusivun
-card.onclick = () => {
-    window.open(`/arvostelu?id=${movie.id}`, '_blank');
-};
+        // Karta tıklayınca detay sayfasını yeni sekmede aç
+        card.onclick = () => {
+            window.open(`/arvostelu?id=${movie.id}`, '_blank');
+        };
 
         card.innerHTML = `
             <button class="delete-btn" onclick="event.stopPropagation(); deleteMovie(${movie.id})">−</button>
@@ -56,7 +55,7 @@ card.onclick = () => {
     });
 }
 
-// 3. Tallenna uusi arvostelu (Popupista)
+// 3. Popup'tan yeni film kaydet
 async function saveMovie() {
     const name = movieInput.value.trim();
     if (!name || selectedStars === 0) {
@@ -79,40 +78,50 @@ async function saveMovie() {
     };
 
     try {
-        // TÄRKEÄÄ: Osoitteen on oltava täsmälleen sama kuin app.js:ssä määritetty
-// Tämän pitää olla täsmälleen näin:
-const response = await fetch('/api/reviews/save', { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-});
+        const response = await fetch('/api/reviews/save', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
 
         if (response.ok) {
             closePopup();
-            fetchReviews();
+            fetchReviews(); // Listeyi yenile
         } else {
             const errorData = await response.json();
-            alert("Virhe palvelimella: " + errorData.error);
+            alert("Virhe palvelimella: " + (errorData.error || "Tuntematon virhe"));
         }
     } catch (err) {
         alert("Yhteysvirhe: " + err.message);
     }
 }
 
-// 4. Poista arvostelu
+// 4. İncelemeyi sil (DÜZELTİLDİ: /api/ eklendi)
 async function deleteMovie(id) {
     if (!confirm("Haluatko varmasti poistaa tämän arvostelun?")) return;
 
     try {
-        const response = await fetch(`/reviews/${id}`, { method: 'DELETE' });
-        if (response.ok) fetchReviews();
+        const response = await fetch(`/api/reviews/${id}`, { 
+            method: 'DELETE' 
+        });
+
+        if (response.ok) {
+            fetchReviews(); // Silindikten sonra listeyi güncelle
+        } else {
+            alert("Poisto epäonnistui palvelimella.");
+        }
     } catch (err) {
+        console.error("Virhe:", err);
         alert("Poisto epäonnistui.");
     }
 }
 
-// --- POPUP JA TÄHDET ---
-function addMovie() { popup.style.display = "flex"; }
+// --- POPUP VE YILDIZ SEÇİMİ ---
+
+function addMovie() { 
+    popup.style.display = "flex"; 
+}
+
 function closePopup() {
     popup.style.display = "none";
     movieInput.value = "";
@@ -120,11 +129,15 @@ function closePopup() {
     stars.forEach(s => s.classList.remove("active"));
 }
 
+// Yıldızlara tıklama olayı
 stars.forEach(star => {
     star.addEventListener("click", () => {
         selectedStars = star.dataset.star;
-        stars.forEach(s => s.classList.toggle("active", s.dataset.star <= selectedStars));
+        stars.forEach(s => {
+            s.classList.toggle("active", s.dataset.star <= selectedStars);
+        });
     });
 });
 
+// Sayfa yüklendiğinde çalıştır
 window.onload = fetchReviews;
