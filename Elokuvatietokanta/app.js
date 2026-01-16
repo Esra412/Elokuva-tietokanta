@@ -1,51 +1,53 @@
 require('dotenv').config();
-console.log("OMDb KEY:", process.env.OMDB_API_KEY);
-
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 
+// Route Dosyaları
 const authRoutes = require('./routes/auth');
-const movieRoutes = require('./routes/movies');
 const omdbRoutes = require('./routes/omdb');
+const movieRoutes = require('./routes/movies');   // İzleme listesi
+const reviewRoutes = require('./routes/reviews'); // Detaylı incelemeler
 
-
-const app = express(); // ✅ ÖNCE app
+const app = express();
 const PORT = 3001;
 
-// JSON & FORM
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// SESSION
-app.use(session({
-    secret: 'salainen_avain_123',
-    resave: false,
-    saveUninitialized: false
-}));
-
-// 🔐 LOGIN KONTROLÜ
+// 1. GÜVENLİK VE LOGIN KONTROLÜ (Middleware)
 function requireLogin(req, res, next) {
     if (!req.session.userId) {
+        // Eğer istek bir API isteği ise JSON dön
+        if (req.originalUrl.startsWith('/api')) {
+            return res.status(401).json({ error: "Sessio vanhentunut. Kirjaudu uudelleen." });
+        }
+        // Normal sayfa isteği ise login sayfasına yönlendir
         return res.redirect('/login');
     }
     next();
 }
 
-app.use('/api/omdb', omdbRoutes);
-
-// ROUTES
-app.use('/api/auth', authRoutes);
-app.use('/api/movies', movieRoutes);
-
-// STATIC
+// 2. MIDDLEWARE AYARLARI
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// VIEWS
+app.use(session({
+    secret: 'salainen_avain_123',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 saatlik oturum
+}));
+
+// 3. VIEW ENGINE AYARLARI
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// PAGES
+// 4. API ROTalari (Backend İşlemleri)
+app.use('/api/auth', authRoutes);
+app.use('/api/omdb', requireLogin, omdbRoutes);
+app.use('/api/movies', requireLogin, movieRoutes);
+app.use('/api/reviews', requireLogin, reviewRoutes);
+
+// 5. SAYFA ROTalari (Frontend Sayfaları)
 app.get('/', (req, res) => {
     res.render('pages/index');
 });
@@ -55,7 +57,6 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/dashboard', requireLogin, (req, res) => {
-    // Render ederken ikinci parametre olarak veriyi gönderiyoruz
     res.render('pages/dashboard', { 
         username: req.session.username || 'Käyttäjä'
     });
@@ -65,8 +66,16 @@ app.get('/movies', requireLogin, (req, res) => {
     res.render('pages/movies');
 });
 
+app.get('/arvostelut', requireLogin, (req, res) => {
+    res.render('pages/arvostelut');
+});
 
-// SERVER
+app.get('/arvostelu', requireLogin, (req, res) => {
+    res.render('pages/arvostelu');
+});
+
+// 6. SERVER BAŞLATMA
 app.listen(PORT, () => {
     console.log(`Server running: http://localhost:${PORT}`);
+    console.log("OMDb KEY loaded:", process.env.OMDB_API_KEY ? "YES" : "NO");
 });
