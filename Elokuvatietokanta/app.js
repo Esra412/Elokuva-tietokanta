@@ -6,9 +6,11 @@ const session = require('express-session');
 const path = require('path');
 
 const authRoutes = require('./routes/auth');
-const movieRoutes = require('./routes/movies');
 const omdbRoutes = require('./routes/omdb');
 
+
+const movieRoutes = require('./routes/movies');   // Watchlist (user_movies taulu)
+const reviewRoutes = require('./routes/reviews'); // Arvostelut (reviews taulu)
 
 const app = express(); // ✅ ÖNCE app
 const PORT = 3001;
@@ -37,7 +39,7 @@ app.use('/api/omdb', omdbRoutes);
 // ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes);
-
+app.use('/api/reviews', reviewRoutes);
 // STATIC
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -75,7 +77,22 @@ app.get('/arvostelu', requireLogin, (req, res) => {
 });
 
 
+// 2. Muuta reitit näin (poista vanhat app.use('/api/movies' jne.)
+app.use('/api/reviews', movieRoutes);
+
 // SERVER
 app.listen(PORT, () => {
     console.log(`Server running: http://localhost:${PORT}`);
 });
+
+function requireLogin(req, res, next) {
+    if (!req.session.userId) {
+        // Jos kyseessä on API-kysely (alkaa /api), palauta JSON-virhe
+        if (req.originalUrl.startsWith('/api')) {
+            return res.status(401).json({ error: "Sessio vanhentunut. Kirjaudu uudelleen." });
+        }
+        // Muuten ohjaa kirjautumissivulle
+        return res.redirect('/login');
+    }
+    next();
+}

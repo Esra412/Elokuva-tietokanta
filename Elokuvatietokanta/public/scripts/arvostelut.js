@@ -1,69 +1,130 @@
 const popup = document.getElementById("popup");
-const addBtn = document.getElementById("addReviewBtn");
-const saveBtn = document.getElementById("saveReview");
 const movieInput = document.getElementById("movieName");
-const stars = document.querySelectorAll(".stars span");
-const reviewList = document.getElementById("reviewList");
-
+const stars = document.querySelectorAll(".star-select span");
 let selectedStars = 0;
 
-  // Verileri tarayıcı hafızasından al
-    let movies = JSON.parse(localStorage.getItem('myMovies')) || [];
-
-    function addMovie() {
-        const name = prompt("Elokuvan nimi:");
-        if (!name) return;
-
-        const stars = parseInt(prompt("Montako tähtiä? (Max 6):"));
+// 1. Hae kaikki arvostelut tietokannasta, kun sivu latautuu
+// 1. Päivitä haku
+async function fetchReviews() {
+    try {
+        const response = await fetch('/api/reviews/all');
         
-        if (isNaN(stars) || stars < 1 || stars > 6) {
-            alert("Ole hyvä ve anna luku 1 ja 6 välillä!");
+        if (response.status === 401) {
+            alert("Sessio on päättynyt. Ole hyvä ja kirjaudu uudelleen.");
+            window.location.href = '/login';
             return;
         }
 
-        const newMovie = {
-            id: Date.now(),
-            name: name,
-            rating: stars
-        };
+        if (!response.ok) {
+            throw new Error("Palvelinvirhe: " + response.status);
+        }
 
-        movies.push(newMovie);
-        saveAndRender();
+        const reviews = await response.json();
+        renderMovies(reviews);
+    } catch (err) {
+        console.error("Virhe haettaessa arvosteluja:", err);
+    }
+}
+
+// 2. Piirrä klaffikortit
+function renderMovies(movies) {
+    const grid = document.getElementById('movieGrid');
+    grid.innerHTML = '';
+
+    movies.forEach(movie => {
+        // Lasketaan tähdet (tietokannassa 'score' on fire + drop, tai voit käyttää fire_ratingia)
+        const rating = movie.fire_rating || 0;
+        const starHtml = '★'.repeat(rating) + '☆'.repeat(6 - rating);
+
+        const card = document.createElement('div');
+        card.className = 'clapper-card';
+        
+        // Klikkaus avaa yksityiskohtaisen arvostelusivun
+card.onclick = () => {
+    window.open(`/arvostelu?id=${movie.id}`, '_blank');
+};
+
+        card.innerHTML = `
+            <button class="delete-btn" onclick="event.stopPropagation(); deleteMovie(${movie.id})">−</button>
+            <div class="clapper-top"></div>
+            <div class="clapper-body">
+                <div class="movie-title">${movie.title}</div>
+                <div class="stars">${starHtml}</div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// 3. Tallenna uusi arvostelu (Popupista)
+async function saveMovie() {
+    const name = movieInput.value.trim();
+    if (!name || selectedStars === 0) {
+        alert("Kirjoita elokuvan nimi ja valitse tähtiarvosana.");
+        return;
     }
 
-    function saveAndRender() {
-        localStorage.setItem('myMovies', JSON.stringify(movies));
-        renderMovies();
+    const data = {
+        title: name,
+        fire: parseInt(selectedStars),
+        drop: 0,
+        score: parseInt(selectedStars),
+        img_url: '',
+        genre: '',
+        category: 'Elokuva',
+        watch_date: new Date().toISOString().split('T')[0],
+        thoughts: '',
+        best_scene: '',
+        quote: ''
+    };
+
+    try {
+        // TÄRKEÄÄ: Osoitteen on oltava täsmälleen sama kuin app.js:ssä määritetty
+// Tämän pitää olla täsmälleen näin:
+const response = await fetch('/api/reviews/save', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+});
+
+        if (response.ok) {
+            closePopup();
+            fetchReviews();
+        } else {
+            const errorData = await response.json();
+            alert("Virhe palvelimella: " + errorData.error);
+        }
+    } catch (err) {
+        alert("Yhteysvirhe: " + err.message);
     }
+}
 
-    function renderMovies() {
-        const grid = document.getElementById('movieGrid');
-        grid.innerHTML = '';
+// 4. Poista arvostelu
+async function deleteMovie(id) {
+    if (!confirm("Haluatko varmasti poistaa tämän arvostelun?")) return;
 
-        movies.forEach(movie => {
-            const starHtml = '★'.repeat(movie.rating) + '☆'.repeat(6 - movie.rating);
-            
-            const card = document.createElement('div');
-            card.className = 'clapper-card';
-            card.onclick = () => openDetails(movie);
-            
-            card.innerHTML = `
-                <div class="clapper-top"></div>
-                <div class="clapper-body">
-                    <div class="movie-title">${movie.name}</div>
-                    <div class="stars">${starHtml}</div>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
+    try {
+        const response = await fetch(`/reviews/${id}`, { method: 'DELETE' });
+        if (response.ok) fetchReviews();
+    } catch (err) {
+        alert("Poisto epäonnistui.");
     }
+}
 
-    function openDetails(movie) {
-        // Yeni sekmede basit bir detay sayfası açar
-        // Open the dedicated review page as a new tab, passing movie name and rating
-        const url = `/arvostelu?movie=${encodeURIComponent(movie.name)}&rating=${encodeURIComponent(movie.rating)}`;
-        window.open(url, '_blank');
-    }
+// --- POPUP JA TÄHDET ---
+function addMovie() { popup.style.display = "flex"; }
+function closePopup() {
+    popup.style.display = "none";
+    movieInput.value = "";
+    selectedStars = 0;
+    stars.forEach(s => s.classList.remove("active"));
+}
 
-    // İlk açılışta kartları yükle
-    renderMovies();
+stars.forEach(star => {
+    star.addEventListener("click", () => {
+        selectedStars = star.dataset.star;
+        stars.forEach(s => s.classList.toggle("active", s.dataset.star <= selectedStars));
+    });
+});
+
+window.onload = fetchReviews;

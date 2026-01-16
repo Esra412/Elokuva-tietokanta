@@ -132,16 +132,37 @@
             margin-bottom: 5px;
             position: relative;
         }
-        
-        .clapper-top::before {
-            content: "";
-            position: absolute;
-            top: 5px; left: 5px;
-            width: 15px; height: 5px;
-            background: red;
-            border-radius: 2px;
-            
-        }
+
+        /* CLAPPER TOP */
+.clapper-top {
+    position: relative;
+    z-index: 1;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    background: transparent;
+    border: 2px solid crimson;
+    color: crimson;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10; /* 🔥 EN ÖNEMLİ SATIR */
+}
 
         .clapper-body {
             background: #1a1a1a; /*duzeltildi*/
@@ -186,6 +207,97 @@
             background: var(--accent-gold);
             color: #000;
         }
+
+        /* POPUP */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    border: 2px solid var(--accent-gold);
+}
+
+.popup-card h2 {
+    color: var(--text-title);
+    margin-bottom: 20px;
+}
+
+.popup-card label {
+    display: block;
+    text-align: left;
+    margin: 15px 0 5px;
+    color: var(--text-gray);
+}
+
+.popup-card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+.star-select {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.star-select span {
+    color: #444;
+    transition: 0.2s;
+}
+
+.star-select span.active {
+    color: var(--accent-gold);
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.cancel-btn,
+.save-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancel-btn {
+    background: #444;
+    color: #fff;
+}
+
+.save-btn {
+    background: var(--accent-gold);
+    color: #000;
+}
+
+
+
+.delete-btn:hover {
+    background: crimson;
+    color: #fff;
+}
+
 
         /* MOBİL UYUMLULUK */
         @media (max-width: 768px) {
