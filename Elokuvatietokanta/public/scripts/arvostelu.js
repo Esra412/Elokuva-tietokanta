@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const reviewId = urlParams.get('id');
 
-// 1. Sayfa yüklendiğinde mevcut verileri getir
+// 1. kun sivu latautuu, lataa arvostelu data
 async function loadReviewData() {
     if (!reviewId) return;
 
@@ -10,10 +10,10 @@ async function loadReviewData() {
         const data = await response.json();
 
         if (data) {
-            // BAŞLIĞI GÜNCELLE
+            // päivitä otsikko
             document.querySelector('h1').innerText = data.title; 
 
-            // Form alanlarını doldur
+            // täydennä fonm kohdat
             document.getElementById('title').value = data.title || '';
             document.getElementById('imgUrl').value = data.img_url || '';
             document.getElementById('genre').value = data.genre || '';
@@ -22,11 +22,11 @@ async function loadReviewData() {
             document.getElementById('bestScene').value = data.best_scene || '';
             document.getElementById('quote').value = data.quote || '';
             
-            // Emoji puanlarını görsel olarak güncelle
+            // Emoji pisteet aseta 
             setRate('dropRating', data.drop_rating || 0);
             setRate('fireRating', data.fire_rating || 0);
             
-            // Resmi önizle
+            // kuvan esikatselu
             previewImage(data.img_url);
         }
     } catch (err) {
@@ -34,12 +34,12 @@ async function loadReviewData() {
     }
 }
 
-// 2. Form gönderildiğinde (Kaydet Butonu)
+// 2. Form lähetys (Tallennus / päivitys buttoni)
 document.getElementById('reviewForm').onsubmit = async (e) => {
     e.preventDefault();
 
     const data = {
-        id: reviewId, // Varsa UPDATE, yoksa INSERT yapar
+        id: reviewId, 
         title: document.getElementById('title').value,
         img_url: document.getElementById('imgUrl').value,
         genre: document.getElementById('genre').value,
@@ -51,7 +51,7 @@ document.getElementById('reviewForm').onsubmit = async (e) => {
         fire: document.getElementById('fireRating').getAttribute('data-val') || 0
     };
     
-    // Toplam skor hesapla
+    // Laske kokonaispisteet
     data.score = parseInt(data.drop) + parseInt(data.fire);
 
     try {
@@ -61,37 +61,37 @@ document.getElementById('reviewForm').onsubmit = async (e) => {
             body: JSON.stringify(data)
         });
 
-        if (response.ok) {
-            alert("Başarıyla kaydedildi!");
-            window.location.href = '/arvostelut'; // Listeye geri dön
+    if (response.ok) {
+            alert("Tallennettu onnistuneesti!");
+            window.location.href = '/arvostelut'; // Palaa listaan
         } else {
-            alert("Kaydedilemedi. Lütfen tekrar deneyin.");
+            alert("Tallennus epäonnistui. Ole hyvä ja yritä uudelleen.");
         }
     } catch (err) {
-        console.error("Kaydetme hatası:", err);
+        console.error("Tallennusvirhe:", err);
     }
 };
 
 // --- YARDIMCI FONKSİYONLAR (MUTLAKA OLMALI) ---
 
-// Puanlama (Emoji) seçimi ve görselleştirme
+// Arvostelu (Emoji) valitseminen ja korostaminen
 function setRate(id, val) {
     const box = document.getElementById(id);
     if (!box) return;
 
-    box.setAttribute('data-val', val); // Değeri sakla
+    box.setAttribute('data-val', val); 
     const spans = box.querySelectorAll('span');
     
     spans.forEach((s, i) => {
         if (i < val) {
-            s.classList.add('active'); // CSS'de .active tanımlı olmalı (genelde grayscale(0))
+            s.classList.add('active'); 
         } else {
             s.classList.remove('active');
         }
     });
 }
 
-// Resim URL'si değiştiğinde önizlemeyi güncelle
+// jos kuva vaihtuu poista se historiasta
 function previewImage(url) {
     const img = document.getElementById('posterPreview');
     if (img) {
@@ -99,5 +99,4 @@ function previewImage(url) {
     }
 }
 
-// Sayfa açıldığında verileri yükle
 window.onload = loadReviewData;

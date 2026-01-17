@@ -48,6 +48,28 @@ req.session.username = user.username; // Bunu ekle!
     });
 });
 
+
+// 2. Uuden salasanan tallentaminen
+router.post('/reset-password/:token', async (req, res) => {
+    const { password } = req.body;
+    const { token } = req.params;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sql = `
+        UPDATE users 
+        SET password = ?, reset_token = NULL, token_expires = NULL 
+        WHERE reset_token = ? AND token_expires > NOW()
+    `;
+
+    db.query(sql, [hashedPassword, token], (err, result) => {
+        if (err || result.affectedRows === 0) {
+            return res.status(400).json({ message: 'Linkki on vanhentunut tai virheellinen' });
+        }
+        res.json({ message: 'Salasana vaihdettu onnistuneesti' });
+    });
+});
+
+
 /*ULOSKIRJAUTUMINEN */
 router.post('/logout', (req, res) => {
     req.session.destroy();
@@ -57,3 +79,6 @@ router.post('/logout', (req, res) => {
 
 
 module.exports = router;
+
+
+

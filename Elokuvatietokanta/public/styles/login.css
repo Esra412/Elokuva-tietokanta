@@ -26,6 +26,7 @@ body {
 .auth-card {
     background: var(--card-bg);
     width: 380px;
+    height: 550px;
     padding: 35px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.7);
     border-radius: 6px;
@@ -130,9 +131,33 @@ body {
 }
 
 
-/* ---------- TEKSTI ---------- */
+/* ---------- UNOHDITKO SALASANAN HOVER ---------- */
 .small-text {
-    font-size: 0.8rem;
-    color: var(--text-gray);
-    margin-top: 15px;
+    display: inline-block; /* PAKOLLINEN AAA, jotta animaatio toimii paremmin */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-bottom: 2px;
+    margin-top: 30px;
+    color: var(--text-gray); /* Alkuperäinen väri harmaa */
+}
+
+.small-text:hover {
+    color: var(--accent-gold); 
+}
+
+/* alaviiva, joka liukuu esiin */
+.small-text::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--accent-gold);
+    transition: width 0.3s ease;
+}
+
+.small-text:hover::after {
+    width: 100%; /* Alaviiva venyy koko tekstin mitalle */
 }

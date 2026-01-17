@@ -1,4 +1,3 @@
-/* SENİN RENK KODLARIN */
         :root {
             --bg-color: #050a24;
             --card-bg: #000000;
@@ -19,14 +18,13 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            /* overflow-y: hidden kaldırıldı çünkü çok film olunca aşağı kaydırman gerekir */
             overflow-x: hidden; 
         }
 
-        /* --- HEADER DÜZELTME --- */
+        /* --- HEADER OARANNUS --- */
         header {
             box-sizing: border-box;
-            width: 100%; /* calc yerine 100% daha güvenlidir */
+            width: 100%; 
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,10 +51,9 @@
             font-size: 1.1rem;
             text-transform: uppercase;
             transition: 0.3s;
-            position: relative; /* allow pseudo-element positioning */
+            position: relative; 
         }
-
-        /* active link: use a centered pseudo-element placed below the text */
+       
         nav a.active {
             padding-bottom: 5px;
         }
@@ -66,7 +63,7 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            bottom: -12px; /* distance under the link text; adjust as needed */
+            bottom: -12px; 
             width: 100%;
             height: 4px;
             background: var(--accent-gold);
@@ -77,10 +74,10 @@
             color: var(--accent-gold);
         }
 
-        /* --- ANA KONTEYNER --- */
+        /* --- PÄÄ KONTEiNER --- */
         .container {
             width: 100%;
-            max-width: 1200px; /* Kartların çok yayılmaması için */
+            max-width: 1200px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -91,13 +88,12 @@
             padding: 0 50px 30px 50px;
             box-sizing: border-box;
             display: flex;
-            justify-content: flex-start; /* Butonu sola yaslar */
+            justify-content: flex-start; 
         }
 
-        /* --- GRID (YAN YANA DİZİLİM) --- */
+        /* --- GRID (vierekkäin asennus) --- */
         .movie-grid {
             display: grid;
-            /* minmax(220px, 1fr) sayesinde kartlar yan yana sığdığı kadar dizilir */
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 40px;
             width: 100%;
@@ -118,7 +114,7 @@
         }
 
         .clapper-card:hover {
-            border-color: var(--accent-gold); /* Mor vurgu */
+            border-color: var(--accent-gold); 
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
         }
@@ -161,11 +157,11 @@
     align-items: center;
     justify-content: center;
 
-    z-index: 10; /* 🔥 EN ÖNEMLİ SATIR */
+    z-index: 10; 
 }
 
         .clapper-body {
-            background: #1a1a1a; /*duzeltildi*/
+            background: #1a1a1a; 
             padding: 20px 10px;
             border-radius: 0 0 8px 8px;
             border-top: 4px solid #000;
@@ -299,7 +295,7 @@
 }
 
 
-        /* MOBİL UYUMLULUK */
+        /* puhelin sopivuus  */
         @media (max-width: 768px) {
             header { padding: 20px; text-align: center; }
             .logo { font-size: 1.8rem; }

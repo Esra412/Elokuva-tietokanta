@@ -3,7 +3,7 @@ const movieInput = document.getElementById("movieName");
 const stars = document.querySelectorAll(".star-select span");
 let selectedStars = 0;
 
-// 1. Sayfa yüklendiğinde tüm incelemeleri getir
+// 1. kun sivu päivittyy tuo elokuvat (joita käyttäjä on arvostellut/lisännyt)
 async function fetchReviews() {
     try {
         const response = await fetch('/api/reviews/all');
@@ -25,20 +25,20 @@ async function fetchReviews() {
     }
 }
 
-// 2. Kartları ekrana çiz (Klaffikortit)
+// 2. korttien luominen (Klaffikortit)
 function renderMovies(movies) {
     const grid = document.getElementById('movieGrid');
     grid.innerHTML = '';
 
     movies.forEach(movie => {
-        // Yıldızları hesapla (6 yıldız üzerinden)
+        // tähti arvostelu 
         const rating = movie.fire_rating || 0;
         const starHtml = '★'.repeat(rating) + '☆'.repeat(6 - rating);
 
         const card = document.createElement('div');
         card.className = 'clapper-card';
         
-        // Karta tıklayınca detay sayfasını yeni sekmede aç
+        // kun klikkaa elokuvaa, avaa arvostelu uuteen välilehteen
         card.onclick = () => {
             window.open(`/arvostelu?id=${movie.id}`, '_blank');
         };
@@ -55,7 +55,7 @@ function renderMovies(movies) {
     });
 }
 
-// 3. Popup'tan yeni film kaydet
+// 3. Popup- uusi elokuva tallennus
 async function saveMovie() {
     const name = movieInput.value.trim();
     if (!name || selectedStars === 0) {
@@ -86,7 +86,7 @@ async function saveMovie() {
 
         if (response.ok) {
             closePopup();
-            fetchReviews(); // Listeyi yenile
+            fetchReviews(); 
         } else {
             const errorData = await response.json();
             alert("Virhe palvelimella: " + (errorData.error || "Tuntematon virhe"));
@@ -96,7 +96,7 @@ async function saveMovie() {
     }
 }
 
-// 4. İncelemeyi sil (DÜZELTİLDİ: /api/ eklendi)
+// 4. Poista elokuva arvostus
 async function deleteMovie(id) {
     if (!confirm("Haluatko varmasti poistaa tämän arvostelun?")) return;
 
@@ -106,7 +106,7 @@ async function deleteMovie(id) {
         });
 
         if (response.ok) {
-            fetchReviews(); // Silindikten sonra listeyi güncelle
+            fetchReviews(); // päivitä kun poistetaan
         } else {
             alert("Poisto epäonnistui palvelimella.");
         }
@@ -116,7 +116,7 @@ async function deleteMovie(id) {
     }
 }
 
-// --- POPUP VE YILDIZ SEÇİMİ ---
+// --- POPUP JA TÄHTÄ VALIKKO ---
 
 function addMovie() { 
     popup.style.display = "flex"; 
@@ -129,7 +129,7 @@ function closePopup() {
     stars.forEach(s => s.classList.remove("active"));
 }
 
-// Yıldızlara tıklama olayı
+// tähti klikkaus juttu
 stars.forEach(star => {
     star.addEventListener("click", () => {
         selectedStars = star.dataset.star;
@@ -139,5 +139,5 @@ stars.forEach(star => {
     });
 });
 
-// Sayfa yüklendiğinde çalıştır
+// kun sivu latautuu 
 window.onload = fetchReviews;
