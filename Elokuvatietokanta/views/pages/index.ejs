@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap" rel="stylesheet"> <!-- Gilda Display Static - FONTTI -->
     <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Playfair Display - FONTTI -->
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Gilda+Display&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <!-- Cutive - FONTTI -->
+    <%- include('../partials/head') %>
 </head>
 <body>
 
@@ -16,8 +17,9 @@
         <div class="logo playfair">ELOKUVATIETOKANTA</div>
         <nav>
             <a href="#" class="active cutive">ETUSIVU</a>
-            <a href="#" class="cutive">ELOKUVAT</a>
-            <a href="#" class="cutive">ARVOSTELUT</a>
+            <a href="/elokuvat" class="cutive requires-login">ELOKUVAT</a>
+            <a href="/arvostelut" class="cutive requires-login">ARVOSTELUT</a>
+
         </nav>
     </header>
 
@@ -66,9 +68,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Kirjautumisvaroitus popup -->
+<div id="loginModal" class="modal-overlay">
+    <div class="modal">
+        <h2 class="Gilda-Display-Static-FONT">Pääsy estetty</h2>
+        <div class="divider"></div>
+        <p class="Gilda-Display-Static-FONT">
+            Sinun täytyy kirjautua sisään nähdäksesi elokuvat ja arvostelut.
+        </p>
+
+        <div class="modal-buttons">
+            <a href="/login" class="btn btn-solid Gilda-Display-Static-FONT">Kirjaudu</a>
+            <button onclick="closeModal()" class="btn btn-outline Gilda-Display-Static-FONT">Peruuta</button>
+        </div>
+    </div>
+</div>
+
+
     <div class="button-group">
             <a href="login" class="btn btn-solid Gilda-Display-Static-FONT">Rekisteröidy Nyt</a>
-        <a href="#" class="btn btn-outline Gilda-Display-Static-FONT">Lisätietoa</a>
+        <a href="/lisatietoa" class="btn btn-outline Gilda-Display-Static-FONT">Lisätietoa</a>
     </div>
+    <script src="/scripts/scripts.js"></script>
 </body>
 </html>

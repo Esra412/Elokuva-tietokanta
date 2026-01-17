@@ -9,6 +9,7 @@
     <!--  Cutive - FONTTI -->
     <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Playfair+Display&family=Cutive&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/login.css">
+    <%- include('../partials/head') %>
 </head>
 <body>
 <div class="auth-card">
@@ -34,7 +35,9 @@
 
     <button class="btn" type="button" onclick="login()">Kirjaudu</button>
 
-    <div class="small-text">Unohditko salasanan?</div>
+    <div class="small-text" onclick="forgotPassword()" style="cursor:pointer">
+    Unohditko salasanan?
+    </div>
 </form>
 
 

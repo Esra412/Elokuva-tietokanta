@@ -2,30 +2,27 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-
-// Route Dosyaları
 const authRoutes = require('./routes/auth');
 const omdbRoutes = require('./routes/omdb');
-const movieRoutes = require('./routes/movies');   // İzleme listesi
-const reviewRoutes = require('./routes/reviews'); // Detaylı incelemeler
+const movieRoutes = require('./routes/movies');  
+const reviewRoutes = require('./routes/reviews'); 
 
 const app = express();
 const PORT = 3001;
 
-// 1. GÜVENLİK VE LOGIN KONTROLÜ (Middleware)
+// 1. LOGIN TARKISTUS 
 function requireLogin(req, res, next) {
     if (!req.session.userId) {
-        // Eğer istek bir API isteği ise JSON dön
+
         if (req.originalUrl.startsWith('/api')) {
             return res.status(401).json({ error: "Sessio vanhentunut. Kirjaudu uudelleen." });
         }
-        // Normal sayfa isteği ise login sayfasına yönlendir
         return res.redirect('/login');
     }
     next();
 }
 
-// 2. MIDDLEWARE AYARLARI
+// 2. MIDDLEWARE ASETUKSET
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -74,6 +71,13 @@ app.get('/arvostelu', requireLogin, (req, res) => {
     res.render('pages/arvostelu');
 });
 
+app.get('/lisatietoa', (req, res) => {
+    res.render('pages/lisatietoa');
+});
+
+app.get('/reset-password/:token', (req, res) => {
+    res.render('pages/reset-password', { token: req.params.token });
+});
 // 6. SERVER BAŞLATMA
 app.listen(PORT, () => {
     console.log(`Server running: http://localhost:${PORT}`);
