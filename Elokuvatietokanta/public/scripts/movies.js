@@ -2,7 +2,7 @@ const searchInput = document.getElementById('search');
 const resultsDiv = document.getElementById('results');
 const myListDiv = document.getElementById('myList');
 
-// 🔍 ELOKUVAHAKU
+// ELOKUVAHAKU
 searchInput?.addEventListener('input', async () => {
     const query = searchInput.value.trim();
     if (query.length < 3) {
@@ -34,7 +34,7 @@ searchInput?.addEventListener('input', async () => {
     } catch (err) { console.error(err); }
 });
 
-// ⭐ LISÄÄ LISTALLE
+// LISÄÄ LISTALLE
 async function addToList(imdbId, type, title, poster) {
     const res = await fetch('/api/movies/add', {
         method: 'POST',
@@ -46,7 +46,7 @@ async function addToList(imdbId, type, title, poster) {
     }
 }
 
-// 📥 LATAA OMA LISTA
+// LATAA OMA LISTA
 async function loadMyList() {
     try {
         const res = await fetch('/api/movies/list');
@@ -67,7 +67,7 @@ async function loadMyList() {
     } catch (err) { console.error(err); }
 }
 
-// 🗑️ POISTA
+// POISTA
 async function removeFromList(id) {
     if(!confirm("Poistetaanko?")) return;
     const res = await fetch(`/api/movies/remove/${id}`, { method: 'DELETE' });

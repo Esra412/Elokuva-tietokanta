@@ -96,7 +96,7 @@ nav a.active {
     margin-bottom: 25px;
 }
 
-/* MOVIE ROWS */
+
 .movie-row {
     display: flex;
     gap: 20px;
@@ -115,7 +115,7 @@ nav a.active {
     border-radius: 10px;
 }
 
-/* MOVIE CARDS */
+/* elokuva kortti */
 .movie-card {
     position: relative;
     min-width: 180px;
@@ -161,7 +161,7 @@ nav a.active {
     color: black;
 }
 
-/* ELOKUVAN NIMI (Valinnainen: jos haluat tekstin kuvan päälle) */
+/* ELOKUVAN NIMI  */
 .movie-info {
     position: absolute;
     bottom: 0;

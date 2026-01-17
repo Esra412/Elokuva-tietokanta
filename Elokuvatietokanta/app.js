@@ -31,20 +31,20 @@ app.use(session({
     secret: 'salainen_avain_123',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 saatlik oturum
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } 
 }));
 
-// 3. VIEW ENGINE AYARLARI
+// 3. VIEW ENGINE ASETUKSET
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// 4. API ROTalari (Backend İşlemleri)
+// 4. API ROTat (Backend juttuja)
 app.use('/api/auth', authRoutes);
 app.use('/api/omdb', requireLogin, omdbRoutes);
 app.use('/api/movies', requireLogin, movieRoutes);
 app.use('/api/reviews', requireLogin, reviewRoutes);
 
-// 5. SAYFA ROTalari (Frontend Sayfaları)
+// 5. SAYFA ROTat (Frontend sivut)
 app.get('/', (req, res) => {
     res.render('pages/index');
 });
@@ -78,7 +78,7 @@ app.get('/lisatietoa', (req, res) => {
 app.get('/reset-password/:token', (req, res) => {
     res.render('pages/reset-password', { token: req.params.token });
 });
-// 6. SERVER BAŞLATMA
+// 6. SERVER ALOITUS
 app.listen(PORT, () => {
     console.log(`Server running: http://localhost:${PORT}`);
     console.log("OMDb KEY loaded:", process.env.OMDB_API_KEY ? "YES" : "NO");

@@ -133,7 +133,7 @@ body {
 
 /* ---------- UNOHDITKO SALASANAN HOVER ---------- */
 .small-text {
-    display: inline-block; /* Tarvitaan, jotta animaatio toimii paremmin */
+    display: inline-block; /* PAKOLLINEN AAA, jotta animaatio toimii paremmin */
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -143,10 +143,10 @@ body {
 }
 
 .small-text:hover {
-    color: var(--accent-gold); /* Vaihtuu harmaasta kullaksi */
+    color: var(--accent-gold); 
 }
 
-/* Luodaan hieno alaviiva, joka liukuu esiin */
+/* alaviiva, joka liukuu esiin */
 .small-text::after {
     content: '';
     position: absolute;

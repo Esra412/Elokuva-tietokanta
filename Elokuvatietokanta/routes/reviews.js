@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// TALLENNA TAI PÄIVITÄ (POST /api/reviews/save)
+// TALLENNA TAI PÄIVITÄ 
 router.post('/save', (req, res) => {
     const userId = req.session.userId;
     if (!userId) return res.status(401).json({ error: "Kirjaudu sisään" });
@@ -10,7 +10,7 @@ router.post('/save', (req, res) => {
     const { id, title, img_url, category, genre, watch_date, thoughts, best_scene, quote, drop, fire, score } = req.body;
 
     if (id) {
-        // GÜNCELLEME (UPDATE)
+        // PÄIVITÄ KIRJAUS
         const sql = `UPDATE reviews SET 
             title=?, img_url=?, genre=?, watch_date=?, thoughts=?, 
             best_scene=?, quote=?, drop_rating=?, fire_rating=?, score=? 
@@ -23,7 +23,7 @@ router.post('/save', (req, res) => {
             res.json({ message: "Arvostelu päivitetty!" });
         });
     } else {
-        // YENİ KAYIT (INSERT)
+        // UUSI KIRJAUS 
         const sql = `INSERT INTO reviews 
             (user_id, title, img_url, category, genre, watch_date, thoughts, best_scene, quote, drop_rating, fire_rating, score) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -37,7 +37,7 @@ router.post('/save', (req, res) => {
     }
 });
 
-// HAE KAIKKI (GET /api/reviews/all)
+// HAE KAIKKI 
 router.get('/all', (req, res) => {
     const userId = req.session.userId;
     db.query("SELECT * FROM reviews WHERE user_id = ? ORDER BY created_at DESC", [userId], (err, results) => {
@@ -46,7 +46,7 @@ router.get('/all', (req, res) => {
     });
 });
 
-// HAE YKSI (GET /api/reviews/:id)
+// HAE YKSI
 router.get('/:id', (req, res) => {
     const userId = req.session.userId;
     db.query("SELECT * FROM reviews WHERE id = ? AND user_id = ?", [req.params.id, userId], (err, results) => {
@@ -55,7 +55,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POISTA (DELETE /api/reviews/:id)
+// POISTA
 router.delete('/:id', (req, res) => {
     const userId = req.session.userId;
     db.query("DELETE FROM reviews WHERE id = ? AND user_id = ?", [req.params.id, userId], (err, result) => {

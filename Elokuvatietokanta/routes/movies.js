@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // Varmista, että polku on oikein
+const db = require('../db'); 
 
-// ⭐ LISÄÄ ELOKUVA (POST /api/movies/add)
+// LISÄÄ ELOKUVA 
 router.post('/add', (req, res) => {
     const { imdbId, type, title, poster } = req.body;
     const userId = req.session.userId;
@@ -19,7 +19,7 @@ router.post('/add', (req, res) => {
     });
 });
 
-// 📥 HAE LISTA (GET /api/movies/list)
+// HAE LISTA 
 router.get('/list', (req, res) => {
     const userId = req.session.userId;
     if (!userId) return res.status(401).json({ error: "Kirjaudu sisään" });
@@ -31,7 +31,7 @@ router.get('/list', (req, res) => {
     });
 });
 
-// 🗑️ POISTA (DELETE /api/movies/remove/:id)
+// POISTA  
 router.delete('/remove/:id', (req, res) => {
     const movieId = req.params.id;
     const sql = "DELETE FROM user_movies WHERE id = ?";

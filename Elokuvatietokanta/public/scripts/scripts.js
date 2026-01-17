@@ -1,4 +1,3 @@
-    // Simuloidaan kirjautumistilaa
     const isLoggedIn = false;
 
     const protectedLinks = document.querySelectorAll('.requires-login');
