@@ -49,6 +49,56 @@ req.session.username = user.username; // Bunu ekle!
 });
 
 
+/*ULOSKIRJAUTUMINEN */
+router.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ message: 'Kirjauduttu ulos' });
+});
+
+
+
+module.exports = router;
+
+
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+
+// 1. Pyyntö salasanan palauttamisesta
+router.post('/forgot-password', (req, res) => {
+    const { email } = req.body;
+    const token = crypto.randomBytes(20).toString('hex'); // Luodaan uniikki koodi
+    const expires = new Date(Date.now() + 3600000); // Voimassa 1 tunnin
+
+    const sql = `UPDATE users SET reset_token = ?, token_expires = ? WHERE email = ?`;
+    
+    db.query(sql, [token, expires, email], (err, result) => {
+        if (err || result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Sähköpostia ei löytynyt' });
+        }
+
+        // Sähköpostin asetukset (Käytä esim. Gmailia tai Mailtrapia testaukseen)
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'esra070bagdat@gmail.com',
+                pass: 'sowugphhjhlpmfdh'
+            }
+        });
+
+        const mailOptions = {
+            from: 'Elokuvatietokanta <no-reply@movie.com>',
+            to: email,
+            subject: 'Salasanan palautus',
+            text: `Palauta salasanasi klikkaamalla linkkiä: http://localhost:3001/reset-password/${token}`
+        };
+
+        transporter.sendMail(mailOptions, (error) => {
+            if (error) return res.status(500).json({ message: 'Virhe sähköpostin lähetyksessä' });
+            res.json({ message: 'Palautuslinkki lähetetty sähköpostiin' });
+        });
+    });
+});
+
 // 2. Uuden salasanan tallentaminen
 router.post('/reset-password/:token', async (req, res) => {
     const { password } = req.body;
@@ -68,17 +118,3 @@ router.post('/reset-password/:token', async (req, res) => {
         res.json({ message: 'Salasana vaihdettu onnistuneesti' });
     });
 });
-
-
-/*ULOSKIRJAUTUMINEN */
-router.post('/logout', (req, res) => {
-    req.session.destroy();
-    res.json({ message: 'Kirjauduttu ulos' });
-});
-
-
-
-module.exports = router;
-
-
-

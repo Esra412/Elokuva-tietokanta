@@ -58,19 +58,15 @@ async function login() {
 
 
 async function forgotPassword() {
-    const email = prompt("Syötä sähköpostiosoitteesi salasanan palautusta varten:");
+    const email = prompt("Syötä sähköpostiosoitteesi:");
     if (!email) return;
 
-    try {
-        const res = await fetch('/api/auth/forgot-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
+    const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
 
-        const result = await res.json();
-        alert(result.message);
-    } catch (err) {
-        alert("Virhe pyynnön lähetyksessä.");
-    }
+    const result = await res.json();
+    alert(result.message);
 }
